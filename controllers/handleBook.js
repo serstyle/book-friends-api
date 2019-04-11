@@ -15,7 +15,10 @@ const addBookToRead = (req, res, db) => {
                 :
                 db.insert({email, bookid:bookID, title, authors, description})
                 .into('booktoread')
-                .then(res.json('success'))
+                .then( data => {
+                    db.select('bookid').from('booktoread').where({email})
+                    .then(data => res.json(data) )
+                })  //You just change that, that mean you need to change the frontend for works
             })
     })
     .catch(err => console.log('err: ', err)) 
