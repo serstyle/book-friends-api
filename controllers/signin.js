@@ -61,7 +61,7 @@ const createSession = (user) => {
         const {authorization} = req.headers;
         return redisClient.get(authorization, (err, reply) =>{
           if(err || !reply) {
-            return res.status(400).json('usnauthoried')
+            return res.status(400).json('unauthoried')
           }
           return res.json({id: reply})
         })

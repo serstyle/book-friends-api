@@ -7,7 +7,6 @@ const handleRegister = (req, res, db, bcrypt) =>{
     const saltRounds = 10;
     const salt = bcrypt.genSaltSync(saltRounds);
     const password = bcrypt.hashSync(hash, salt);
-    console.log(password)
     return db.transaction(trx =>{
         trx.insert({hash:password, email})
         .into('login')
@@ -32,7 +31,7 @@ const handleRegister = (req, res, db, bcrypt) =>{
 const createSession = (user) => {
     //JWT Token return user id
     const {id, email} = user;
-    const token = signToken(email);
+    const token = signToken(id);
     return setToken(token, id)
     .then(()=>{
       return {success:'true', userId: id, token}
@@ -40,8 +39,8 @@ const createSession = (user) => {
     .catch(console.log)
   }
   //create the token for the session 
-  const signToken = ( email ) =>{
-    const jwtPayload = { email };
+  const signToken = ( id ) =>{
+    const jwtPayload = { id };
     return jwt.sign(jwtPayload, 'JWT_SECRET', {expiresIn:'2 days'});
   }
   

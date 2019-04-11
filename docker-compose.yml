@@ -1,14 +1,14 @@
 version: '3.7'
 
 services:
-  backend_api:
-    container_name: backend-template
+  book_friend_api:
+    container_name: book_friend_server
     build: ./
-    working_dir: /usr/src/backend-template
+    working_dir: /usr/src/book_friend_server
     volumes: 
-      - ./:/usr/src/backend-template
+      - ./:/usr/src/book_friend_server
     environment:
-      POSTGRES_URI: postgres://francois:secret@postgres:5432/server-template-docker
+      POSTGRES_URI: postgres://francois:secret@postgres:5432/book-friend-api-docker
       REDIS_URI: redis://redis:6379
     ports:
       - "3000:3000"
@@ -18,7 +18,7 @@ services:
     environment:
       POSTGRES_USER: francois
       POSTGRES_PASSWORD: secret
-      POSTGRES_DB: server-template-docker
+      POSTGRES_DB: book-friend-api-docker
       POSTGRES_HOST: postgres
     ports:
       - "5432:5432"
