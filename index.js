@@ -60,6 +60,6 @@ app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile
 //     }
 // }
 
-app.listen(3000 || process.env.PORT, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log(`server on ${process.env.PORT}`);
 });
