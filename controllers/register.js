@@ -16,7 +16,9 @@ const handleRegister = (req, res, db, bcrypt) =>{
             .returning('*')
             .insert({
                 email:loginEmail[0],
-                name: name
+                name: name,
+                age: 0,
+                city: 'Undifinied'
             })
             .then(data => data[0])
             .catch(err => console.log(err))
