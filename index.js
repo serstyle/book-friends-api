@@ -18,8 +18,15 @@ const app = express()
 
 const db = knex({
     client: 'pg',
-    connection: process.env.POSTGRES_URI
+    connection: process.env.DATABASE_URL,
+    ssl: true,
   });
+
+//   client: 'pg',
+//   connection: {
+//     connectionString: process.env.POSTGRES_URI
+//   }
+// });
 
 app.use(morgan('combined'))
 app.use(cors())
@@ -53,6 +60,6 @@ app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile
 //     }
 // }
 
-app.listen(3000, ()=>{
+app.listen(3000 || process.env.PORT, ()=>{
     console.log('server on 3000');
 });
