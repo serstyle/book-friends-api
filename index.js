@@ -18,8 +18,7 @@ const app = express()
 
 const db = knex({
     client: 'pg',
-    connection: process.env.DATABASE_URL,
-    ssl: true,
+    connection: process.env.POSTGRES_URI
   });
 
 //   client: 'pg',
@@ -40,9 +39,13 @@ app.post('/signin', (req, res) => { signin.signinAuthentication(req, res, db, bc
 app.post('/register', (req, res) => { register.registerAuthentication(req, res, db, bcrypt)});
 app.post('/signout', auth.requireAuth, (req, res) => { signout.handleSignout(req, res)});
 
-app.post('/addbook', auth.requireAuth, (req, res) => { handleBook.addBookToRead(req, res, db)});
+app.post('/addbook', auth.requireAuth,(req, res) => { handleBook.addBookToRead(req, res, db)});
 app.post('/getbook', auth.requireAuth, (req, res) => { handleBook.getBookToRead(req, res, db)});
-app.post('/delbook', auth.requireAuth, (req, res) => { handleBook.delBookToRead(req, res, db)});
+app.post('/delbook', auth.requireAuth,(req, res) => { handleBook.delBookToRead(req, res, db)});
+
+app.post('/addbookreading', auth.requireAuth,(req, res) => { handleBook.addBookReading(req, res, db)});
+app.post('/getbookreading', auth.requireAuth, (req, res) => { handleBook.getBookReading(req, res, db)});
+app.post('/delbookreading', auth.requireAuth, (req, res) => { handleBook.delBookReading(req, res, db)});
 
 app.post('/profile', auth.requireAuth, (req, res) => {profile.getProfile(req, res, db, jwt)});
 app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile(req, res, db)});
@@ -60,6 +63,6 @@ app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile
 //     }
 // }
 
-app.listen(process.env.PORT, ()=>{
+app.listen(process.env.PORT || 3000, ()=>{
     console.log(`server on ${process.env.PORT}`);
 });

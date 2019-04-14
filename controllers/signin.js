@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const redis = require('redis');
 
-const redisClient = redis.createClient(process.env.REDISCLOUD_URL, {no_ready_check: true})
-
+const redisClient = redis.createClient(process.env.REDIS_URI)
+// process.env.REDISCLOUD_URL, {no_ready_check: true} for heroku
 const handleSignin = (req, res, db, bcrypt) =>{
     const {email, hash} = req.body;
     return db.select('*').from('login')
