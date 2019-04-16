@@ -43,12 +43,13 @@ const delBookToRead = (req, res, db) => {
     .catch(err => console.log('fail: ', err))
 }
 
+// Book reading
+
 const addBookReading = (req, res, db) => {
     const {email, bookID, title, authors, description} = req.body
     console.log(email, bookID)
     db.select('*').from('bookreading').where({email, bookid:bookID})
     .then(data => {
-        console.log(data)
         data.length?
         res.status(400).json('already in the booklist')
         :
@@ -90,4 +91,58 @@ const delBookReading = (req, res, db) => {
     .catch(err => console.log('fail: ', err))
 }
 
-module.exports = { addBookToRead, getBookToRead, delBookToRead, addBookReading, getBookReading, delBookReading };
+//Book finish
+
+const addBookFinish = (req, res, db) => {
+    const {email, bookID, title, authors, description} = req.body
+    console.log(email, bookID)
+    db.select('*').from('bookfinish').where({email, bookid:bookID})
+    .then(data => {
+        console.log(data)
+        data.length?
+        res.status(400).json('already in the booklist')
+        :
+        db.select('bookid').from('bookfinish').where({email})
+        .then(data =>  
+            {
+                data.length >=10?
+                res.status(400).json('too much book')
+                :
+                db.insert({email, bookid:bookID, title, authors, description})
+                .into('bookfinish')
+                .then( data => {
+                    db.select('bookid', 'title', 'authors', 'description').from('bookfinish').where({email})
+                    .then(data => {
+                        const bookreading = data
+                        db('bookreading').where({email, bookid:bookID}).del()
+                            .then(del => res.json(bookreading))
+                        })
+                })
+                .catch(err => res.json('err'))
+            })
+    })
+    .catch(err => console.log('err: ', err)) 
+};
+
+const getBookFinish = (req, res, db) => {
+    const {email} = req.body;
+    db.select('bookid', 'title', 'authors', 'description').from('bookfinish').where({email})
+    .then(data => {
+        res.json(data)
+        console.log(data)})
+    .catch(err => console.log(err))
+}
+
+
+const delBookFinish = (req, res, db) => {
+    const {email, bookid} = req.body;
+    db('bookfinish').where({email, bookid}).del()
+    .then(data => res.json('success_del'))
+    .catch(err => console.log('fail: ', err))
+}
+
+module.exports = { 
+    addBookToRead, getBookToRead, delBookToRead, 
+    addBookReading, getBookReading, delBookReading, 
+    addBookFinish, getBookFinish, delBookFinish 
+};

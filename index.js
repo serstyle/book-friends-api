@@ -13,6 +13,7 @@ const auth = require('./controllers/authorization');
 const signout = require('./controllers/signout');
 const handleBook = require('./controllers/handleBook');
 const profile = require('./controllers/profile');
+const reviews = require('./controllers/reviews');
 
 const app = express()
 
@@ -40,15 +41,23 @@ app.post('/register', (req, res) => { register.registerAuthentication(req, res, 
 app.post('/signout', auth.requireAuth, (req, res) => { signout.handleSignout(req, res)});
 
 app.post('/addbook', auth.requireAuth,(req, res) => { handleBook.addBookToRead(req, res, db)});
-app.post('/getbook', auth.requireAuth, (req, res) => { handleBook.getBookToRead(req, res, db)});
+app.post('/getbook', auth.requireAuth,(req, res) => { handleBook.getBookToRead(req, res, db)});
 app.post('/delbook', auth.requireAuth,(req, res) => { handleBook.delBookToRead(req, res, db)});
 
 app.post('/addbookreading', auth.requireAuth,(req, res) => { handleBook.addBookReading(req, res, db)});
-app.post('/getbookreading', auth.requireAuth, (req, res) => { handleBook.getBookReading(req, res, db)});
-app.post('/delbookreading', auth.requireAuth, (req, res) => { handleBook.delBookReading(req, res, db)});
+app.post('/delbookreading', auth.requireAuth,(req, res) => { handleBook.delBookReading(req, res, db)});
+app.post('/getbookreading', auth.requireAuth,(req, res) => { handleBook.getBookReading(req, res, db)});
+
+app.post('/addbookfinish', auth.requireAuth,(req, res) => { handleBook.addBookFinish(req, res, db)});
+app.post('/getbookfinish', auth.requireAuth,(req, res) => { handleBook.getBookFinish(req, res, db)});
+app.post('/delbookfinish', auth.requireAuth,(req, res) => { handleBook.delBookFinish(req, res, db)});
 
 app.post('/profile', auth.requireAuth, (req, res) => {profile.getProfile(req, res, db, jwt)});
 app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile(req, res, db)});
+
+app.post('/addreview', auth.requireAuth, (req, res) => {reviews.addReview(req, res, db)});
+app.post('/getreview', (req, res) => {reviews.getReview(req, res, db)});
+
 
 // function verifyToken(req, res, next){
 //     const barearHeader = req.headers['authorization'];
