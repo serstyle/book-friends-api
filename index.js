@@ -57,6 +57,8 @@ app.put('/updateprofile', auth.requireAuth, (req, res) => {profile.updateProfile
 
 app.post('/addreview', auth.requireAuth, (req, res) => {reviews.addReview(req, res, db)});
 app.post('/getreview', (req, res) => {reviews.getReview(req, res, db)});
+app.post('/delreview', auth.requireAuth,(req, res) => {reviews.delReview(req, res, db, jwt)});
+
 
 
 // function verifyToken(req, res, next){

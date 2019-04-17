@@ -21,12 +21,15 @@ const updateProfile = (req, res, db) => {
     db('users')
     .where({email})
     .update({name, age, city})
+    .returning('*')
     .then(data =>{
-        db.select('*').from('users').where({email})
-        .then(resp => {
-            res.json(resp[0])
-            console.log(resp[0])
-        })
+        console.log('update :', data[0])
+        res.json(data[0])
+        // db.select('*').from('users').where({email})
+        // .then(resp => {
+        //     res.json(resp[0])
+        //     console.log(resp[0])
+        // })
     })
     .catch(err => console.log(err))
 }
