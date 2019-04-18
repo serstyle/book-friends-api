@@ -20,13 +20,15 @@ const app = express()
 
 const db = knex({
     client: 'pg',
-    connection: process.env.POSTGRES_URI
+    connection: {
+        connectionString: process.env.DATABASE_URL,
+        ssl: true,
+      }
   });
 
 //   client: 'pg',
-//   connection: {
-//     connectionString: process.env.POSTGRES_URI
-//   }
+//   connection: process.env.POSTGRES_URI
+//   
 // });
 
 app.use(morgan('combined'))
