@@ -14,6 +14,7 @@ const signout = require('./controllers/signout');
 const handleBook = require('./controllers/handleBook');
 const profile = require('./controllers/profile');
 const reviews = require('./controllers/reviews');
+const otherProfile = require('./controllers/otherProfile');
 
 const app = express()
 
@@ -59,6 +60,11 @@ app.post('/addreview', auth.requireAuth, (req, res) => {reviews.addReview(req, r
 app.post('/getreview', (req, res) => {reviews.getReview(req, res, db)});
 app.post('/delreview', auth.requireAuth,(req, res) => {reviews.delReview(req, res, db, jwt)});
 
+app.post('/otherprofile', (req, res) => {otherProfile.getProfile(req, res, db)});
+app.post('/otherprofile/reviews', (req, res) => {otherProfile.getReviews(req, res, db)});
+app.post('/otherprofile/toreadbooklist', (req, res) => {otherProfile.getToReadBookList(req, res, db)});
+app.post('/otherprofile/readingbooklist', (req, res) => {otherProfile.getReadingBookList(req, res, db)});
+app.post('/otherprofile/finishbooklist', (req, res) => {otherProfile.getFinishBookList(req, res, db)});
 
 
 // function verifyToken(req, res, next){

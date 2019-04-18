@@ -23,8 +23,13 @@ const updateProfile = (req, res, db) => {
     .update({name, age, city})
     .returning('*')
     .then(data =>{
+        const user = data;
         console.log('update :', data[0])
         res.json(data[0])
+        db('reviewbook')
+        .where({email})
+        .update({name})
+        .then(data =>res.json(user[0]))
         // db.select('*').from('users').where({email})
         // .then(resp => {
         //     res.json(resp[0])

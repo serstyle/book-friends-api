@@ -1,18 +1,24 @@
 const addReview = (req, res, db) =>{
-    const {bookid, email, note, review} = req.body
-    console.log(bookid,email,note, review)
-    db.insert({email, bookid, note, review}).into('reviewbook')
-    .returning('*')
-    .then(data => {
-        res.json(data[0])
-    })
-    .catch(err => console.log(err))
+    const {bookid, userid, note, review, booktitle} = req.body
+    console.log(bookid,userid,note, review)
+    db.select('name').from('users').where({id:userid})
+    .then(
+        data=>{
+            const name = data[0].name
+            db.insert({userid, bookid, note, review, name, booktitle}).into('reviewbook')
+            .returning('*')
+            .then(data => {
+                res.json(data[0])
+            })
+            .catch(err => console.log(err))
+        }
+    )
 }
 
 const getReview = (req, res, db) => {
     const {bookid} = req.body
     console.log('bokid', bookid)
-    db.select('email', 'note', 'review', 'id').from('reviewbook').where({bookid})
+    db.select('userid', 'note', 'review', 'id', 'name').from('reviewbook').where({bookid})
     .then(data => res.json(data))
     .catch(err => console.log(err))
 }
@@ -29,7 +35,7 @@ const delReview = (req, res, db, jwt) =>{
             .where('id', '=', authData.id) //look for the id equal at the token payload 
             .then(resp => {
                 if(resp[0].email ===  email){// resp email and compare with the email send by the user
-                    db('reviewbook').where({email, id:reviewid}).del() // if it s true then its possible to del
+                    db('reviewbook').where({userid:authData.id, id:reviewid}).del() // if it s true then its possible to del
                     .returning('*')
                     .then(data =>{  
                         console.log('data', data[0].id)
