@@ -25,9 +25,8 @@ const updateProfile = (req, res, db) => {
     .then(data =>{
         const user = data;
         console.log('update :', data[0])
-        res.json(data[0])
         db('reviewbook')
-        .where({email})
+        .where({userid:data[0].id})
         .update({name})
         .then(data =>res.json(user[0]))
         // db.select('*').from('users').where({email})
