@@ -15,15 +15,13 @@ const handleBook = require('./controllers/handleBook');
 const profile = require('./controllers/profile');
 const reviews = require('./controllers/reviews');
 const otherProfile = require('./controllers/otherProfile');
+const follow = require('./controllers/follow');
 
 const app = express()
 
 const db = knex({
     client: 'pg',
-    connection: {
-    connectionString: process.env.DATABASE_URL,
-    ssl: true,
-  }
+    connection: process.env.POSTGRES_URI
   });
 
 //   client: 'pg',
@@ -68,8 +66,13 @@ app.post('/delreview', auth.requireAuth,(req, res) => {reviews.delReview(req, re
 app.post('/otherprofile', (req, res) => {otherProfile.getProfile(req, res, db)});
 app.post('/otherprofile/reviews', (req, res) => {otherProfile.getReviews(req, res, db)});
 app.post('/otherprofile/toreadbooklist', (req, res) => {otherProfile.getToReadBookList(req, res, db)});
-app.post('/otherprofile/readingbooklist', (req, res) => {otherProfile.getReadingBookList(req, res, db)});
+app.post('/otherprofile/readingbooklist', (req, res) => {otherProfile.getReadingBookList(req, res, db)}); //dont forget to add auth
 app.post('/otherprofile/finishbooklist', (req, res) => {otherProfile.getFinishBookList(req, res, db)});
+
+app.post('/follow/addfollow', (req, res) => {follow.addFollow(req, res, db)});
+app.post('/follow/getfollows', (req, res) => {follow.getFollow(req, res, db)});
+app.post('/follow/getfollowers', (req, res) => {follow.getFollower(req, res, db)}); //dont forget to add auth
+app.post('/follow/unfollow', (req, res) => {follow.unFollow(req, res, db)});
 
 
 // function verifyToken(req, res, next){

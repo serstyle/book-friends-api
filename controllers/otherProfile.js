@@ -1,7 +1,19 @@
 const getProfile = (req, res, db) => {
     const {id} = req.body
     db('users').select('name').where({id})
-    .then(resp => res.json(resp[0]))
+    .then(resp => {
+        const data = resp[0]
+        db('follow').select('user_id').where({follow_by_id:id})
+        .then(resp =>{
+            const follows = resp
+            db('follow').select('follow_by_id').where({user_id:id})
+            .then(resp =>{
+                const followers = resp
+                res.json({data, follows, followers})
+            })
+        })
+    })
+    .catch(err => res.json('err'))
 
 }
 
