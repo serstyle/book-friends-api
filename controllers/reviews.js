@@ -62,7 +62,8 @@ const getAllReviews = (req, res, db) => {
         db('reviewbook').select('*').orderBy('id', 'desc').limit(10).whereIn('userid', [...follows,id])
         .then(resp=> res.json(resp))
         :
-        res.json(resp)
+        db('reviewbook').select('*').orderBy('id', 'desc').limit(10).where('userid', '=', id)
+        .then(resp=> res.json(resp))
     })
 }
 
