@@ -19,7 +19,7 @@ const getProfile = (req, res, db) => {
 
 const getReviews = (req, res, db) => {
     const {id} = req.body
-    db.select('booktitle', 'note', 'review', 'bookid', 'id').from('reviewbook').where({userid:id})
+    db.select('booktitle', 'note', 'review', 'bookid', 'id').from('reviewbook').orderBy('id', 'desc').limit(10).where({userid:id})
     .then(reviews => res.json(reviews))
 }
 

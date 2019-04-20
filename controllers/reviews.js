@@ -18,7 +18,7 @@ const addReview = (req, res, db) =>{
 const getReview = (req, res, db) => {
     const {bookid} = req.body
     console.log('bokid', bookid)
-    db.select('userid', 'note', 'review', 'id', 'name').from('reviewbook').where({bookid})
+    db.select('userid', 'note', 'review', 'id', 'name').from('reviewbook').orderBy('id', 'desc').limit(10).where({bookid})
     .then(data => res.json(data))
     .catch(err => console.log(err))
 }
@@ -53,4 +53,19 @@ const delReview = (req, res, db, jwt) =>{
 
 }
 
-module.exports = {addReview, getReview, delReview}
+const getAllReviews = (req, res, db) => {
+    const {id} = req.body
+    db('follow').select('user_id').where({follow_by_id:id})
+    .then(resp => {
+        const follows = resp.map(follow=>follow.user_id)
+        resp.length?
+        db('reviewbook').select('*').orderBy('id', 'desc').limit(10).whereIn('userid', [...follows,id])
+        .then(resp=> res.json(resp))
+        :
+        res.json(resp)
+    })
+}
+
+// select * from reviewbook where userid in (1,2) order by id desc limit 5 ;
+
+module.exports = {addReview, getReview, delReview, getAllReviews}
