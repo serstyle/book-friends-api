@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 const morgan = require('morgan');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const helmet = require('helmet');
 
 //route
 const signin = require('./controllers/signin');
@@ -19,12 +20,11 @@ const follow = require('./controllers/follow');
 
 const app = express()
 
+app.user(helmet())
+
 const db = knex({
     client: 'pg',
-    connection: {
-            connectionString: process.env.DATABASE_URL,
-            ssl: true,
-          }
+    connection: process.env.POSTGRES_URI
   });
 
 //   client: 'pg',
