@@ -10,7 +10,7 @@ The front end is deploy on netlify and the back end on heroku.
 
 **Live on :** https://bookfriends.netlify.com/ 
 
-**backend repo :** https://github.com/serstyle/book_friends
+**backend repo :** https://github.com/serstyle/book_friend
 
 ## What techs I used 
 
