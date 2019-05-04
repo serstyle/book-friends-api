@@ -17,10 +17,11 @@ const profile = require('./controllers/profile');
 const reviews = require('./controllers/reviews');
 const otherProfile = require('./controllers/otherProfile');
 const follow = require('./controllers/follow');
+const users = require('./controllers/users');
 
 const app = express()
 
-app.user(helmet())
+app.use(helmet())
 
 const db = knex({
     client: 'pg',
@@ -46,6 +47,8 @@ app.get('/', (req,res)=>{
 app.post('/signin', (req, res) => { signin.signinAuthentication(req, res, db, bcrypt)});
 app.post('/register', (req, res) => { register.registerAuthentication(req, res, db, bcrypt)});
 app.post('/signout', auth.requireAuth, (req, res) => { signout.handleSignout(req, res)});
+
+app.get('/users', (req, res) => { users.getUsers(req, res, db)});
 
 app.post('/addbook', auth.requireAuth,(req, res) => { handleBook.addBookToRead(req, res, db)});
 app.post('/getbook', auth.requireAuth,(req, res) => { handleBook.getBookToRead(req, res, db)});

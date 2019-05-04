@@ -20,7 +20,11 @@ const handleRegister = (req, res, db, bcrypt) =>{
                 age: 0,
                 city: 'Undifinied'
             })
-            .then(data => data[0])
+            .then(data => {
+              const user = data[0]
+              return db.insert({user_id:1, follow_by_id:user.id}).into('follow')
+              .then(resp => user)
+            }) 
             .catch(err => console.log(err))
         })
         .then(trx.commit)

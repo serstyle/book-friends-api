@@ -16,7 +16,7 @@ const getProfile = (req, res, db, jwt) => {
     }) 
 }
 
-const updateProfile = (req, res, db) => {
+const updateProfile = (req, res, db) => { //should use transaction knex
     const {email, name, age, city} = req.body;
     db('users')
     .where({email})

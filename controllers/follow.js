@@ -21,7 +21,9 @@ const getFollow = (req, res, db) => {
         const array = data.map(follow => follow.user_id)
         if(data.length){
         db.raw('select * from users where id in (' + array.map(_ => '?').join(',') + ')', [...array])
-        .then(resp=>res.json(resp.rows))}
+        .then(resp=>{
+            // console.log(resp)
+            res.json(resp.rows)})}
         else{
             console.log('trigger')
             res.json(data)
@@ -33,6 +35,7 @@ const getFollower = (req, res, db) => {
     const {user_id} = req.body;
     db('follow').select('follow_by_id').where({user_id})
     .then(data => {
+        console.log('data',data)
         const array = data.map(follower => follower.follow_by_id)
         if(data.length){
             db.raw('select * from users where id in (' + array.map(_ => '?').join(',') + ')', [...array]) //select mutliple user with there id
