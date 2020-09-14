@@ -1,3 +1,5 @@
+Old project, I should refactor it and review weaknesses in it :)
+
 ## Book Friends 
 
 For a test account you can take test@test as email and test as password but you can also create your own account.
